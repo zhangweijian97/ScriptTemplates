@@ -19,8 +19,8 @@ from typing import List
 class Config:
     """实验配置类"""
     experiment_name: str = "默认实验"
-    input_path: str = "./data"
-    output_path: str = "./results"
+    input_path: str = "data" # 当前开发/实验/测试下的data目录
+    output_path: str = "results" # 当前开发/实验/测试下的results目录
     param1: str = "默认参数"
     param2: int = 100
     param3: bool = False
@@ -37,6 +37,10 @@ def run_experiment(config: Config) -> bool:
         print(f"参数2: {config.param2}")
         print(f"参数3: {config.param3}")
         print(f"参数4: {config.param4}")
+
+        # 运行实验
+        # 可以是直接在同一个文件中写代码，也可以是调用其他函数或模块
+        
         print(f"=== 实验 {config.experiment_name} 运行完成 ===")
         return True
     except Exception as e:
@@ -73,6 +77,17 @@ def parse_arguments() -> Config:
     return config
 
 
+def run_from_args():
+    """从命令行参数运行实验"""
+    # 解析命令行参数
+    config = parse_arguments()
+    
+    # 运行实验
+    print("开始运行命令行实验...")
+    success = run_experiment(config)
+    print(f"命令行实验运行{'成功' if success else '失败'}")
+
+
 def preset_experiment_1():
     return Config(experiment_name="实验 1", param1="实验1参数", param2=200, param3=True)
 
@@ -98,23 +113,15 @@ def run_preset_experiments():
     print("\n所有预设实验运行完成")
 
 
-def run_from_args():
-    """从命令行参数运行实验"""
-    # 解析命令行参数
-    config = parse_arguments()
-    
-    # 运行实验
-    print("开始运行命令行实验...")
-    success = run_experiment(config)
-    print(f"命令行实验运行{'成功' if success else '失败'}")
-
-
 def main():
     """主函数"""
-    if len(sys.argv) == 1:
-        run_preset_experiments()
-    else:
-        run_from_args()
+    # 判断是从命令行运行还是从预设实验列表运行
+    if len(sys.argv) > 1:
+        # 有参数
+        run_from_args()  # 从命令行运行  
+    else:  
+        # 无参数
+        run_preset_experiments()  # 从预设实验列表运行
 
 
 if __name__ == '__main__':
